@@ -1,0 +1,14 @@
+install:
+	poetry install
+
+run:
+	poetry run project
+
+build:
+	poetry build
+
+publish:
+	poetry publish --dry-run	
+
+package-install:
+	poetry run pip install dist/*.whl

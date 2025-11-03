@@ -1,0 +1,14 @@
+dist/
+build/
+
+
+__pycache__/
+
+.env
+.venv
+env/
+venv/
+.idea/
+.vscode/
+*.swp
+*.swo
