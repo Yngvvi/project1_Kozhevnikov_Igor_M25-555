@@ -8,7 +8,10 @@ build:
 	poetry build
 
 publish:
-	poetry publish --dry-run	
+	poetry publish --dry-run
 
 package-install:
 	poetry run pip install dist/*.whl
+
+lint:
+	poetry run ruff check .
