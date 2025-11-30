@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-from constants import ROOMS
-from utils import *
-from player_actions import *
+from labyrinth_game.utils import *
+from labyrinth_game.player_actions import *
 
 def main():
     game_state = {
