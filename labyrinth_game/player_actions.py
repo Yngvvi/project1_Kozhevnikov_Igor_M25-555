@@ -22,6 +22,7 @@ def move_player(game_state, direction):
         game_state['current_room'] = possible_direction[direction]
         game_state['steps_taken'] += 1
         describe_current_room(game_state)
+        random_event(game_state)
     else:
         print("Нельзя пойти в этом направлении.")
 
@@ -58,7 +59,7 @@ def use_item(game_state, item_name):
 
 # Функция решения загадок
 def solve_puzzle(game_state):
-    rewards = ['gold_coin', 'magic_dust', 'crystal', 'potion']
+    rewards = ['coin', 'magic_dust', 'crystal', 'potion']
     current_room = game_state['current_room']
     puzzle = ROOMS[current_room]['puzzle']
     if puzzle:
