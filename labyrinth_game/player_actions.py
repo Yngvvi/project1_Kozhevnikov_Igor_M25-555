@@ -1,4 +1,6 @@
 from labyrinth_game.utils import *
+import random
+
 # Функция отображения инвентаря
 def show_inventory(game_state):
     inventory = game_state['player_inventory']
@@ -6,7 +8,6 @@ def show_inventory(game_state):
         print(f"Инвентарь: {', '.join(inventory)}")
     else:
         print('Инвентарь пуст')
-
 #Ввод пользователя
 def get_input(prompt="> "):
     try:
@@ -14,7 +15,6 @@ def get_input(prompt="> "):
     except (KeyboardInterrupt, EOFError):
         print("\nВыход из игры.")
         return "quit"
-
 # Функция перемещения
 def move_player(game_state, direction):
     possible_direction = ROOMS[game_state['current_room']]['exits']
@@ -55,3 +55,50 @@ def use_item(game_state, item_name):
 
     else:
         print('У вас нет такого предмета.')
+
+# Функция решения загадок
+def solve_puzzle(game_state):
+    rewards = ['gold_coin', 'magic_dust', 'crystal', 'potion']
+    current_room = game_state['current_room']
+    puzzle = ROOMS[current_room]['puzzle']
+    if puzzle:
+        question, correct_answer = puzzle
+        print(question)
+        user_answer = get_input("Ваш ответ: ")
+        if user_answer.lower() == correct_answer.lower():
+            print('Правильно!')
+            ROOMS[current_room]['puzzle'] = None
+            reward = random.choice(rewards)
+            game_state['player_inventory'].append(reward)
+            print(f"Вы получили: {reward}!")
+        else:
+            print("Неверно. Попробуйте снова.")
+    else:
+        print('Загадок здесь нет.')
+
+# Открытие сундука
+def attempt_open_treasure(game_state):
+    current_room = game_state['current_room']
+    question, correct_answer = ROOMS[current_room]['puzzle']
+    win_flag = False
+
+    if 'treasure_key' in game_state['player_inventory']:
+        win_flag = True
+    else:
+        answer = get_input(f"Сундук заперт. (подсказка:"
+                           f"{question.split('подсказка:')[1]} "
+                           f"Ввести код? (да/нет)")
+        if answer.lower() == 'да':
+            code = get_input('Введите код: ')
+            if code == correct_answer:
+                win_flag = True
+            else:
+                print('Неверный код!')
+        else:
+            print("Вы отступаете от сундука.")
+
+    if win_flag:
+        print("Вы применяете ключ, и замок щёлкает. Сундук открыт!")
+        ROOMS[current_room]['items'].remove('treasure_chest')
+        print("В сундуке сокровище! Вы победили!")
+        game_state['game_over'] = True

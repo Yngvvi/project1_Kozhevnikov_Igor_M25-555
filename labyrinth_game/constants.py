@@ -58,13 +58,13 @@ ROOMS = {
     'hidden_chamber': {
         'description': 'Маленькая секретная комната. В центре стоит сундук с сложным замком.',
         'exits': {'east': 'laboratory'},
-        'items': ['herbal_potion'],
+        'items': ['herbal_potion', 'treasure_key'],
         'puzzle': ('На замке надпись: "Чем больше отдаю, тем больше вырастаю. Величину свою отдачей измеряю.', 'яма')
     },
     'garden': {
         'description': 'Заброшенный сад с фонтаном. Вода давно высохла, но в чаше фонтана что-то блестит.',
         'exits': {'west': 'hall', 'north': 'greenhouse'},
-        'items': ['silver_key'],
+        'items': ['flower'],
         'puzzle': ('На фонтане надпись: "Назови меня по имени и я исчезну"', 'тишина')
     },
     'greenhouse': {

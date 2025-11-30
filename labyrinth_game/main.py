@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-from labyrinth_game.utils import *
 from labyrinth_game.player_actions import *
 
 def process_command(game_state, command):
+    current_room = game_state['current_room']
     parts = command.split()
     if not parts:
         return
@@ -23,20 +23,30 @@ def process_command(game_state, command):
         case 'quit' | 'exit':
             game_state['game_over'] = True
         case 'solve':
-            pass
+            if current_room == 'treasure_room':
+                attempt_open_treasure(game_state)
+            else:
+                solve_puzzle(game_state)
         case 'take':
             if param:
-                take_item(game_state, param)
+                if ((current_room == 'treasure_room') and
+                        (param == 'treasure_chest')):
+                    print("Вы не можете поднять сундук, он слишком тяжелый.")
+                else:
+                    take_item(game_state, param)
             else:
                 print("Укажите предмет, который нужно взять")
         case 'use':
-            use_item(game_state, param)
+            if param:
+                use_item(game_state, param)
+            else:
+                print("Укажите предмет, который хотите использовать.")
         case _:
             print("Неизвестная команда. Введите 'help' для справки.")
 
 def main():
     game_state = {
-        'player_inventory': [],  # Инвентарь игрока
+        'player_inventory': [''],  # Инвентарь игрока
         'current_room': 'entrance',  # Текущая комната
         'game_over': False,  # Значения окончания игры
         'steps_taken': 0  # Количество шагов
